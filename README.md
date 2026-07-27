@@ -7,6 +7,89 @@ A small ASP.NET Core Web API that shows how to use **[GM.Mediator](https://www.n
 to build a clean, CQRS-style application: thin controllers that send commands through a mediator,
 with cross-cutting concerns (validation, performance logging) implemented as pipeline behaviours.
 
+## Using GM.Mediator
+
+The package is DI-friendly and has no dependencies beyond
+`Microsoft.Extensions.DependencyInjection.Abstractions`. Targets `net10.0`.
+
+### Install
+
+```bash
+dotnet add package GM.Mediator
+```
+
+### Register
+
+Scan one or more assemblies for handlers and behaviors:
+
+```csharp
+using GM.Mediator;
+
+services.AddGMMediator(typeof(Program).Assembly);
+
+// Optional: choose the service lifetime (defaults to Scoped)
+services.AddGMMediator(ServiceLifetime.Transient, typeof(Program).Assembly);
+```
+
+### Requests with a response
+
+```csharp
+public record GetUser(int Id) : IRequest<UserDto>;
+
+public class GetUserHandler : IRequestHandler<GetUser, UserDto>
+{
+    public Task<UserDto> Handle(GetUser request, CancellationToken ct) => /* ... */;
+}
+
+// usage
+UserDto user = await mediator.Send(new GetUser(42));
+```
+
+### Requests without a response
+
+```csharp
+public record DeleteUser(int Id) : IRequest;
+
+public class DeleteUserHandler : IRequestHandler<DeleteUser>
+{
+    public Task Handle(DeleteUser request, CancellationToken ct) => /* ... */;
+}
+
+await mediator.Send(new DeleteUser(42));
+```
+
+### Notifications (multiple handlers)
+
+```csharp
+public record UserCreated(int Id) : INotification;
+
+public class SendWelcomeEmail : INotificationHandler<UserCreated> { /* ... */ }
+public class UpdateAnalytics  : INotificationHandler<UserCreated> { /* ... */ }
+
+await mediator.Publish(new UserCreated(42)); // both handlers run
+```
+
+### Pipeline behaviors
+
+Behaviors wrap handlers and run in registration order (first registered = outermost).
+Both response and no-response variants are supported.
+
+```csharp
+public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+{
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
+    {
+        // before
+        var response = await next();
+        // after
+        return response;
+    }
+}
+```
+
+Open generic behaviors are registered automatically by `AddGMMediator`. This repository shows
+both behaviors in action — see [`GM.Mediator.Sample.Application/Behaviours`](GM.Mediator.Sample.Application/Behaviours).
+
 ## What this demonstrates
 
 - **Commands with a response** — `CreateSampleCommand : IRequest<string>` and its handler.
