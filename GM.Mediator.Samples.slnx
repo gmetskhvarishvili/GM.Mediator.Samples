@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Solution Items/Meta/">
+    <File Path="README.md" />
+    <File Path="LICENSE" />
+  </Folder>
+  <Folder Name="/Solution Items/Build/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/Solution Items/CI/">
+    <File Path=".github/workflows/ci.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="GM.Mediator.Sample.API/GM.Mediator.Sample.API.csproj" />
+    <Project Path="GM.Mediator.Sample.Application/GM.Mediator.Sample.Application.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GM.Mediator.Sample.Tests/GM.Mediator.Sample.Tests.csproj" />
+  </Folder>
+</Solution>

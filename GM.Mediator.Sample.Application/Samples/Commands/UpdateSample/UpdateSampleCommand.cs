@@ -2,7 +2,6 @@ using GM.Mediator.Contracts;
 
 namespace GM.Mediator.Sample.Application.Samples.Commands.UpdateSample;
 
-/// <summary>A command with no response — handled via <see cref="IRequest"/>.</summary>
 public class UpdateSampleCommand : IRequest
 {
     public required string Test { get; set; }
