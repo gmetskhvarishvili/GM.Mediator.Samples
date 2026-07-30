@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="icon.png" alt="GM.Mediator Samples" width="140" height="140" />
+</p>
+
 # GM.Mediator Samples
 
 [![CI](https://github.com/gmetskhvarishvili/GM.Mediator.Samples/actions/workflows/ci.yml/badge.svg)](https://github.com/gmetskhvarishvili/GM.Mediator.Samples/actions/workflows/ci.yml)
