@@ -3,12 +3,12 @@ using GM.Mediator.Contracts;
 
 namespace GM.Mediator.Sample.Application.Samples.Commands.CreateSample;
 
-public class CreateSampleCommand : IRequest<string>
+public sealed record CreateSampleCommand : IRequest<string>
 {
-    public required string Test { get; set; }
+    public required string Test { get; init; }
 }
 
-public class CreateSampleCommandValidator : AbstractValidator<CreateSampleCommand>
+public sealed class CreateSampleCommandValidator : AbstractValidator<CreateSampleCommand>
 {
     public CreateSampleCommandValidator()
     {
@@ -18,7 +18,7 @@ public class CreateSampleCommandValidator : AbstractValidator<CreateSampleComman
     }
 }
 
-public class CreateSampleCommandHandler : IRequestHandler<CreateSampleCommand, string>
+public sealed class CreateSampleCommandHandler : IRequestHandler<CreateSampleCommand, string>
 {
     public async Task<string> Handle(CreateSampleCommand request, CancellationToken cancellationToken)
     {

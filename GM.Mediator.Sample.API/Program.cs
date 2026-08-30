@@ -1,5 +1,6 @@
 using GM.Mediator.Sample.API.Middleware;
 using GM.Mediator.Sample.Application;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddApplication();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
@@ -25,6 +28,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+// Liveness must not depend on downstream dependencies, so it runs no checks; readiness runs
+// every registered health check (none here yet). See engineering baseline §11.
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
+app.MapHealthChecks("/health/ready");
 
 app.Run();
 

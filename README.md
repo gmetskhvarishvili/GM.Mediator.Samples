@@ -137,14 +137,18 @@ Then open **https://localhost:7186/swagger** to try the endpoints, or use the re
 
 | Method | Route | Body | Result |
 | --- | --- | --- | --- |
-| `POST` | `/samples` | `{ "test": "hello" }` | `200` + `"Property hello passed successfully!"` |
-| `POST` | `/samples` | `{ "test": "" }` | `400` ProblemDetails (validation failed) |
-| `PUT` | `/samples` | `{ "test": "hello" }` | `200` |
+| `POST` | `/api/v1/samples` | `{ "test": "hello" }` | `200` + `"Property hello passed successfully!"` |
+| `POST` | `/api/v1/samples` | `{ "test": "" }` | `400` ProblemDetails (validation failed) |
+| `PUT` | `/api/v1/samples` | `{ "test": "hello" }` | `200` |
+| `GET` | `/health/live` | — | `200` `Healthy` (liveness; no downstream checks) |
+| `GET` | `/health/ready` | — | `200` `Healthy` (readiness; runs registered checks) |
+
+Routes are URL-versioned (`/api/v1/...`) per the engineering baseline.
 
 Example:
 
 ```bash
-curl -k -X POST https://localhost:7186/samples \
+curl -k -X POST https://localhost:7186/api/v1/samples \
   -H "Content-Type: application/json" \
   -d '{ "test": "hello" }'
 ```
@@ -152,7 +156,7 @@ curl -k -X POST https://localhost:7186/samples \
 ## How a request flows
 
 ```
-HTTP POST /samples
+HTTP POST /api/v1/samples
   → SamplesController.Create
     → IMediator.Send(CreateSampleCommand)
       → RequestValidationBehavior   (runs validators; throws on failure -> 400)

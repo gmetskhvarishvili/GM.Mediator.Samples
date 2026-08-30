@@ -1,7 +1,7 @@
 @host = https://localhost:7186
 
 ### Create a sample (command with a response) — returns 200 + a message
-POST {{host}}/samples
+POST {{host}}/api/v1/samples
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Create a sample with an invalid body — returns 400 ProblemDetails (validation behaviour)
-POST {{host}}/samples
+POST {{host}}/api/v1/samples
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Update a sample (command with no response) — returns 200
-PUT {{host}}/samples
+PUT {{host}}/api/v1/samples
 Content-Type: application/json
 
 {

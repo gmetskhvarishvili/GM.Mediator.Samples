@@ -5,6 +5,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+
+        <!--
+          CA1707 is relaxed for test code only: the mandated test name style is
+          Method_Scenario_ExpectedResult, which uses underscores.
+        -->
+        <NoWarn>$(NoWarn);CA1707</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
