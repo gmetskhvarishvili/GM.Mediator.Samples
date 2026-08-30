@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace GM.Mediator.Sample.API.Samples;
 
 [ApiController]
-[Route("[controller]")]
-public class SamplesController : BaseController
+[Route("api/v1/[controller]")]
+public sealed class SamplesController : BaseController
 {
     [HttpPost]
     public async Task<IActionResult> Create(CreateSampleCommand command, CancellationToken cancellationToken)

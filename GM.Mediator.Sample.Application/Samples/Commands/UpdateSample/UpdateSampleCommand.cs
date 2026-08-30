@@ -2,12 +2,12 @@ using GM.Mediator.Contracts;
 
 namespace GM.Mediator.Sample.Application.Samples.Commands.UpdateSample;
 
-public class UpdateSampleCommand : IRequest
+public sealed record UpdateSampleCommand : IRequest
 {
-    public required string Test { get; set; }
+    public required string Test { get; init; }
 }
 
-public class UpdateSampleCommandHandler : IRequestHandler<UpdateSampleCommand>
+public sealed class UpdateSampleCommandHandler : IRequestHandler<UpdateSampleCommand>
 {
     public Task Handle(UpdateSampleCommand request, CancellationToken cancellationToken)
     {

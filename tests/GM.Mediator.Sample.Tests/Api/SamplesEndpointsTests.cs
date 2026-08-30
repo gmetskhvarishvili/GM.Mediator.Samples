@@ -17,7 +17,7 @@ public class SamplesEndpointsTests(WebApplicationFactory<Program> factory)
     [Fact]
     public async Task Post_with_a_valid_command_returns_200_and_the_handler_result()
     {
-        var response = await _client.PostAsJsonAsync("/samples", new { Test = "hello" });
+        var response = await _client.PostAsJsonAsync("/api/v1/samples", new { Test = "hello" });
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var body = await response.Content.ReadAsStringAsync();
@@ -27,7 +27,7 @@ public class SamplesEndpointsTests(WebApplicationFactory<Program> factory)
     [Fact]
     public async Task Post_with_an_invalid_command_returns_400_problem_details()
     {
-        var response = await _client.PostAsJsonAsync("/samples", new { Test = "" });
+        var response = await _client.PostAsJsonAsync("/api/v1/samples", new { Test = "" });
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         var body = await response.Content.ReadAsStringAsync();
@@ -37,8 +37,20 @@ public class SamplesEndpointsTests(WebApplicationFactory<Program> factory)
     [Fact]
     public async Task Put_with_a_valid_command_returns_200()
     {
-        var response = await _client.PutAsJsonAsync("/samples", new { Test = "hello" });
+        var response = await _client.PutAsJsonAsync("/api/v1/samples", new { Test = "hello" });
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData("/health/live")]
+    [InlineData("/health/ready")]
+    public async Task Health_endpoints_report_healthy(string path)
+    {
+        var response = await _client.GetAsync(path);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Equal("Healthy", body);
     }
 }

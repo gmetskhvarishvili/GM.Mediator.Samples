@@ -3,8 +3,10 @@ using FluentValidation.Results;
 
 namespace GM.Mediator.Sample.Application.Exceptions;
 
-public class ValidationException : Exception
+public sealed class ValidationException : Exception
 {
+    private static readonly JsonSerializerOptions MessageJsonOptions = new() { WriteIndented = true };
+
     public ValidationException()
         : base("Validation Error")
     {
@@ -54,11 +56,7 @@ public class ValidationException : Exception
             myFailures.Add(propertyName, propertyFailures);
         }
 
-        
-        return JsonSerializer.Serialize(myFailures, new JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
+        return JsonSerializer.Serialize(myFailures, MessageJsonOptions);
     }
 
     public IDictionary<string, string[]> Failures { get; }
