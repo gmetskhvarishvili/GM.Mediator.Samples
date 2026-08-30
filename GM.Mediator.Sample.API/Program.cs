@@ -34,7 +34,11 @@ app.MapControllers();
 app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
 app.MapHealthChecks("/health/ready");
 
-app.Run();
+await app.RunAsync();
 
 // Exposed so the integration test project can bootstrap the app via WebApplicationFactory.
-public partial class Program;
+public partial class Program
+{
+    // Only used as a WebApplicationFactory<Program> marker; never instantiated directly.
+    protected Program() { }
+}
